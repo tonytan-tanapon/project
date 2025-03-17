@@ -2,6 +2,7 @@
 
 ## Overview
 This web application is a full-stack project designed to manage user data in a database, handle file uploads and downloads, integrate AI-based image classification using TensorFlow.js, and provide a linear search animation. The project is built with HTML, CSS (Bootstrap), JavaScript, and TensorFlow.js for AI functionality. It interacts with a backend server to fetch, update, and delete user data and files.
+![image](https://github.com/user-attachments/assets/df3e3cb3-6d8b-4f7e-8fca-ed90a2ee013d)
 
 ## Features
 1. **Database Management**
