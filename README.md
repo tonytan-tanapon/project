@@ -80,7 +80,8 @@ This project is licensed under the MIT License.
 
 ## Author
 **Tony Tantisripreecha**  
-[GitHub Profile](https://github.com/your-username)
+[GitHub Profile](https://tonytan-tanapon.github.io/index.html)
+
 
 ![image](https://github.com/user-attachments/assets/df3e3cb3-6d8b-4f7e-8fca-ed90a2ee013d)
 ![image](https://github.com/user-attachments/assets/b36443f9-6228-481f-a250-9f3301606f62)
