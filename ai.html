@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model in JS</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #imagePreview {
+            margin-top: 20px;
+            display: none; /* Hide initially */
+            max-width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>AI Model with TensorFlow.js</h2>
+
+    <input type="file" id="imageUpload" accept="image/*">
+    <br><br>
+    <img id="imagePreview" alt="Uploaded Image">
+    <br><br>
+    <button onclick="classifyImage()">Classify Image</button>
+    <p id="result">Prediction: </p>
+
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreview.style.display = "block"; // Show the image
+        });
+
+        async function classifyImage() {
+            const imgInput = document.getElementById('imageUpload');
+            const resultText = document.getElementById('result');
+            const imgPreview = document.getElementById('imagePreview');
+
+            if (!imgInput.files.length) {
+                alert("Please upload an image!");
+                return;
+            }
+
+            const model = await mobilenet.load(); // Load the MobileNet model
+            const predictions = await model.classify(imgPreview);
+
+            resultText.innerHTML = `Prediction: ${predictions[0].className} (${(predictions[0].probability * 100).toFixed(2)}%)`;
+        }
+    </script>
+</body>
+</html>
