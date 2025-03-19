@@ -1,0 +1,17 @@
+body {
+    max-width: 900px;
+    margin: 50px auto;
+    font-family: Arial, sans-serif;
+}
+
+.pagination-btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.user-id-link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}

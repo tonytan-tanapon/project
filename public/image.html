@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model in JS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #imagePreview {
+            margin-top: 20px;
+            display: none; /* Hide initially */
+            max-width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+        }
+            .navbar {
+        margin-bottom: 0;
+        padding: 10px 0;
+    }
+
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+
+    <!-- JavaScript to load the navbar -->
+    <script>
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+    </script>
+ <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <div class="container">
+    <!-- Load TensorFlow.js -->
+    <h2 class="mb-4 text-center">AI Model with TensorFlow.js</h2>
+
+    <input type="file" id="imageUpload" accept="image/*">
+    <br><br>
+    <img id="imagePreview" alt="Uploaded Image">
+    <br><br>
+    <button onclick="classifyImage()">Classify Image</button>
+    <p id="result">Prediction: </p>
+    <br>
+    <p>The above is a pre-trained model from TensorFlow.js for image classification. </p>
+    <p> Please upload an image and click "Classify Image" to see the results.</p>
+    
+</div>
+    
+
+    <script src="./js/image.js">
+        
+    </script>
+</body>
+</html>

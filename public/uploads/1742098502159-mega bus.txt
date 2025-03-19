@@ -1,0 +1,20 @@
+mega bus
+queen low price 
+manhattan high
+
+liberty
+
+summit one
+time square
+
+ChatMediator mediator = new ChatMediatorImpl();
+		User user1 = new UserImpl(mediator, "Pankaj");
+		
+		
+		PositionImp pos1 = new PositionImp(mediator, "Position1");
+		
+		
+		mediator.addUser(user1);
+	
+		
+		mediator.addUser(pos1);
