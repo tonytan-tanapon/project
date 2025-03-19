@@ -1,486 +1,219 @@
+<!-- 
+comments(id,user_id,comment_text,create_at,sentiment)
+files(id,filename,fielpath,upload_date,user_id,click,category)
+users(id,name,email)
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database & File Management</title>
+    <title>Digital Advertisement Service Simulation</title>
 
-    <!-- Bootstrap for styling -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    
     <style>
         body {
-            max-width: 900px;
-            margin: 50px auto;
-            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
         }
-        .pagination-btns {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
+        /* .container {
+            max-width: 1000px;
+            margin-top: 30px;
+        } */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
         }
-        .user-id-link {
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
+        .card {
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
         }
-        .file-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+        .card:hover {
+            transform: translateY(-5px);
         }
-        #imagePreview {
-            margin-top: 20px;
-            display: none; /* Hide initially */
-            max-width: 300px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            padding: 5px;
+        .feature-icon {
+            font-size: 2rem;
+            color: #007bff;
         }
-
-        /*linear search text  */
-  .header {
-    font-size: 35px;
-    text-align: center;
-  }
-  /* back ground */
-  #array {
-    background-color: rgb(255, 255, 255);
-    height: 305px;
-    width: 598px;
-    margin: auto;
-    position: relative;
-    margin-top: 64px;
-  }
-  /* bar 
-    we knoe width 
-    we don't know high so we use js to assign them */
-  .block {
-    width: 28px;
-    background-color: #5b9568;
-    position: absolute;
-    bottom: 0px;
-    transition: 0.2s all ease;
-  }
-  /* number show on the top of bar */
-  .block_id {
-    position: absolute;
-    color: black;
-    margin-top: -20px;
-    width: 100%;
-    text-align: center;
-  }
     </style>
 </head>
 <body>
+    <div id="navbar-placeholder"></div>
+
+    <!-- JavaScript to load the navbar -->
+    <script>
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+    </script>
+
     <div class="container">
-        <h2 class="text-center mb-4">Database & File Management</h2>
+        <h2 class="section-title mt-4">Digital Advertisement Service Simulation</h2>
+        <!-- <h2 class="section-title" style="margin-top: 24px;">Digital Advertisement Service Simulation</h2> -->
+        <!-- <h2 class="section-title" style="margin-top: 24px;"></h2> -->
+        <p class="text-center">
+            A learning project for **client-server architecture, RESTful APIs, database management, file management, and AI applications.** 
+            This system allows users to manage products, track ad engagement, and analyze customer feedback using AI-powered sentiment analysis.
+        </p>
 
-        <!-- Navigation Tabs -->
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#database">Database</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#upload">Upload & Download</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#ai">AI</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#search">Linear Search Animation</a>
-            </li>
-        </ul>
+        <!-- Tech Stack Section -->
+        <h3 class="section-title mt-5">🛠️ Tech Stack</h3>
+      
+        <div class="row text-center">
+            <div class="col-md-4">
+                <p><strong>Backend:</strong> Node.js (Express)</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Frontend:</strong> HTML, CSS, JavaScript</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>Database:</strong> MySQL</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>AI & ML:</strong> TensorFlow.js</p>
+            </div>
+            <div class="col-md-4">
+                <p><strong>REST API:</strong> Express.js</p>
+            </div>
+        </div>
 
-        <div class="tab-content mt-3">
-            <!-- Database Tab -->
-            <div id="database" class="tab-pane fade show active">
-                <h3>Database Management</h3>
-                <div class="card p-3 mb-3">
-                    <h5>Add New User</h5>
-                    <div class="row g-2">
-                        <div class="col-md-5">
-                            <input type="text" id="newName" class="form-control" placeholder="Enter name">
-                        </div>
-                        <div class="col-md-5">
-                            <input type="email" id="newEmail" class="form-control" placeholder="Enter email">
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary w-100" onclick="addUser()">Add</button>
-                        </div>
+        <!-- Features Section -->
+        <h3 class="section-title mt-5">🚀 Features</h3>
+        <div class="row g-4">
+
+            <!-- Database Management -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">📂</span>
+                        <h5 class="mt-3">Database Management (CRUD)</h5>
+                        <p>Perform Create, Read, Update, and Delete operations for user and product management.</p>
                     </div>
                 </div>
-
-                <table class="table table-bordered table-striped text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTable"></tbody>
-                </table>
-
-                <!-- Pagination -->
-                <div class="pagination-btns">
-                    <button class="btn btn-secondary" onclick="prevPage()">Previous</button>
-                    <span class="mx-3" id="pageNumber">Page 1</span>
-                    <button class="btn btn-secondary" onclick="nextPage()">Next</button>
-                </div>
             </div>
 
-            <!-- Upload & Download Tab -->
-            <div id="upload" class="tab-pane fade">
-                <h3>File Upload & Download</h3>
-                <div class="card p-3 mb-4">
-                    <h5>Upload a File</h5>
-                    <div class="row g-2">
-                        <div class="col-md-8">
-                            <input type="file" id="fileInput" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-primary w-100" onclick="uploadFile()">Upload</button>
-                        </div>
+            <!-- File Management -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">📁</span>
+                        <h5 class="mt-3">File Management</h5>
+                        <p>Upload and Download files for advertisement purposes.</p>
                     </div>
-                    <p id="status" class="mt-3 text-center text-success"></p>
-                </div>
-
-                <h4>Uploaded Files</h4>
-                <ul id="fileList" class="list-group"></ul>
-            </div>
-
-             <!-- Image classification Tab -->
-             <div id="ai" class="tab-pane fade">
-                <h3>Image classification using TensorFlow.js</h3>
-                <input type="file" id="imageUpload" accept="image/*">
-                <br><br>
-                <img id="imagePreview" alt="Uploaded Image">
-                <br><br>
-                <button onclick="classifyImage()">Classify Image</button>
-                <p id="result">Prediction: </p>
-            </div>
-
-
-            <!-- linear search Tab -->
-            <div id="search" class="tab-pane fade">
-                <p class="header">Linear Search</p>
-                <!-- box array is area for a set of bar -->
-                <div id="array"></div>
-                <br /><br />
-
-                <div style="text-align: center">
-                <label for="fname">Number to be Searched:</label>
-                <input type="text" id="fname" name="fname" />
-                <br /><br />
-                <button id="btn" onclick="LinearSearch()">Search</button>
-                <br /><br />
-                <div id="text"></div>
-            
                 </div>
             </div>
 
+            <!-- Advertisement Tracking -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">📊</span>
+                        <h5 class="mt-3">Advertisement Tracking</h5>
+                        <p>Track the number of clicks on product images and record engagement analytics.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentiment Analysis -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">🧠</span>
+                        <h5 class="mt-3">Sentiment Analysis (AI)</h5>
+                        <p>Analyze customer comments using TensorFlow.js to determine sentiment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Classification -->
+            <!-- <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">🖼️</span>
+                        <h5 class="mt-3">Image Classification (AI)</h5>
+                        <p>Use AI models to categorize uploaded product images automatically.</p>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Additional Features -->
+            <h3 class="section-title mt-5">🔧 Additional Enhancements</h3>
+
+            <!-- Improve AI Performance -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">🚀</span>
+                        <h5 class="mt-3">Improve AI Performance</h5>
+                        <p>Optimize AI models for better accuracy and speed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Processing -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">📊</span>
+                        <h5 class="mt-3">Data Processing</h5>
+                        <p>Efficiently process large datasets for analytics and AI training.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentation -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">📜</span>
+                        <h5 class="mt-3">Documentation</h5>
+                        <p>Provide detailed project documentation for developers and users.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load Balancing -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">⚖️</span>
+                        <h5 class="mt-3">Load Balancing</h5>
+                        <p>Ensure system stability and distribute server loads efficiently.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Authorization -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">🔐</span>
+                        <h5 class="mt-3">User Authorization</h5>
+                        <p>Implement secure user authentication and role-based access control.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UX/UI -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <div class="text-center">
+                        <span class="feature-icon">🎨</span>
+                        <h5 class="mt-3">UX/UI Improvements</h5>
+                        <p>Enhance user interface for better experience and accessibility.</p>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Load TensorFlow.js -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
-    <script>
-        var container = document.getElementById("array");
-    // Calling generatearray function
-    generatearray();
-          // Function to generate the array of blocks
-    function generatearray() {
-        for (var i = 0; i < 20; i++) {
-        // Return a value from 1 to 100 (both inclusive)
-        var value = Math.ceil(Math.random() * 100); // raw value
-    
-        // Creating element div
-        var array_ele = document.createElement("div");
-    
-        // Adding class 'block' to div
-        array_ele.classList.add("block"); // block from css file
-    
-        // Adding style to div
-        // _.style is modifing the properties
-        array_ele.style.height = `${value * 3}px`; // the hight of bar showen in web site
-        array_ele.style.transform = `translate(${i * 30}px)`; //space between bar
-    
-        // Creating label element for displaying
-        // size of particular block
-        var array_ele_label = document.createElement("label");
-        array_ele_label.classList.add("block_id"); // labal from css file
-        array_ele_label.innerText = value; // add text on web site
-    
-        // Appending created elements to index.html
-        array_ele.appendChild(array_ele_label);
-        container.appendChild(array_ele);
-        }
-    }
-    
-    // Asynchronous LinearSearch function
-    // call when click the search button
-    async function LinearSearch(delay = 300) {
-        // input block data
-        var blocks = document.querySelectorAll(".block");
-    
-        //Extracting the value entered by the user
-        // input data 
-        var num = document.getElementById("fname").value;
-    
-        // output data
-        var output = document.getElementById("text");
-    
-        //Changing the color of all the blocks to voilet
-        for (var i = 0; i < blocks.length; i += 1) {
-            blocks[i].style.backgroundColor = "#6b5b95";
-        }
-    
-        output.innerText = "Processing...";
-    
-        var flag = 0;
-        // LinearSearch Algorithum
-        for (var i = 0; i < blocks.length; i += 1) {
-            //Changing the color of current block to red
-            blocks[i].style.backgroundColor = "#FF4949";
-    
-            // To wait for .1 sec
-            await new Promise((resolve) =>
-            setTimeout(() => {
-                resolve();
-            }, delay)
-            );
-    
-            //Extracting the value of current block
-            var value = Number(blocks[i].childNodes[0].innerHTML);
-    
-            // To compare block value with entered value
-            if (value == num) {
-                flag = 1;
-                output.innerText = "Element Found";
-    
-                blocks[i].style.backgroundColor = "#13CE66";
-                break;
-            } else {
-                // Changing the color to the previous one
-                blocks[i].style.backgroundColor = "#6b5b95";
-            }
-        }
-        //When element is not found in the array
-            if (flag == 0) {
-              output.innerText = "Element Not Found";
-        }
-    }
-    
-        </script>
-
-    <script>
-        document.getElementById('imageUpload').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const imagePreview = document.getElementById('imagePreview');
-            imagePreview.src = URL.createObjectURL(file);
-            imagePreview.style.display = "block"; // Show the image
-        });
-
-        async function classifyImage() {
-            const imgInput = document.getElementById('imageUpload');
-            const resultText = document.getElementById('result');
-            const imgPreview = document.getElementById('imagePreview');
-
-            if (!imgInput.files.length) {
-                alert("Please upload an image!");
-                return;
-            }
-
-            const model = await mobilenet.load(); // Load the MobileNet model
-            const predictions = await model.classify(imgPreview);
-
-            resultText.innerHTML = `Prediction: ${predictions[0].className} (${(predictions[0].probability * 100).toFixed(2)}%)`;
-        }
-    </script>
-
-    <script>
-        // ==== database management ====
-        let users = [];
-        let currentPage = 1;
-        const limit = 10;
-  
-        async function fetchUsers() {
-            try {
-                const response = await fetch('http://localhost:3000/users');
-                users = await response.json();
-                displayUsers();
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            }
-        }
-
-        function displayUsers() {
-            const tableBody = document.getElementById('userTable');
-            tableBody.innerHTML = '';
-
-            const start = (currentPage - 1) * limit;
-            const end = start + limit;
-            const paginatedUsers = users.slice(start, end);
-
-            paginatedUsers.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><span class="user-id-link" onclick="viewUser(${user.id})">${user.id}</span></td>
-                    <td><input type="text" value="${user.name}" id="name-${user.id}" disabled></td>
-                    <td><input type="email" value="${user.email}" id="email-${user.id}" disabled></td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="enableEdit(${user.id})" id="edit-${user.id}">Edit</button>
-                        <button class="btn btn-success btn-sm" onclick="updateUser(${user.id})" id="update-${user.id}" style="display:none;">Update</button>
-                        <button class="btn btn-secondary btn-sm" onclick="cancelEdit(${user.id})" id="cancel-${user.id}" style="display:none;">Cancel</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-
-            document.getElementById('pageNumber').innerText = `Page ${currentPage} / ${Math.ceil(users.length / limit)}`;
-        }
-        function viewUser(id) {
-            window.location.href = `crud-detail.html?id=${id}`;
-        }
-        function enableEdit(id) {
-            document.getElementById(`name-${id}`).disabled = false;
-            document.getElementById(`email-${id}`).disabled = false;
-            document.getElementById(`edit-${id}`).style.display = 'none';
-            document.getElementById(`update-${id}`).style.display = 'inline';
-            document.getElementById(`cancel-${id}`).style.display = 'inline';
-        }
-
-        function cancelEdit(id) {
-            const user = users.find(user => user.id === id);
-            document.getElementById(`name-${id}`).value = user.name;
-            document.getElementById(`email-${id}`).value = user.email;
-            document.getElementById(`name-${id}`).disabled = true;
-            document.getElementById(`email-${id}`).disabled = true;
-            document.getElementById(`edit-${id}`).style.display = 'inline';
-            document.getElementById(`update-${id}`).style.display = 'none';
-            document.getElementById(`cancel-${id}`).style.display = 'none';
-        }
-
-        async function updateUser(id) {
-            const name = document.getElementById(`name-${id}`).value;
-            const email = document.getElementById(`email-${id}`).value;
-
-            await fetch(`http://localhost:3000/users/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email })
-            });
-
-            cancelEdit(id);
-            fetchUsers();
-        }
-
-        function nextPage() {
-            if (currentPage * limit < users.length) {
-                currentPage++;
-                displayUsers();
-            }
-        }
-
-        function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                displayUsers();
-            }
-        }
-
-        async function deleteUser(id) {
-            await fetch(`http://localhost:3000/users/${id}`, { method: 'DELETE' });
-            fetchUsers();
-        }
-
-      // ======================
-        //  FILE UPLOAD SYSTEM
-        // ======================
-        async function uploadFile() {
-            const fileInput = document.getElementById('fileInput');
-            const status = document.getElementById('status');
-
-            if (!fileInput.files.length) {
-                status.innerText = "Please select a file.";
-                status.classList.add("text-danger");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-
-            try {
-                const response = await fetch('http://localhost:3000/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                status.innerText = result.message;
-                status.classList.remove("text-danger");
-                status.classList.add("text-success");
-
-                // Refresh file list after upload
-                fetchFiles();
-            } catch (error) {
-                status.innerText = "Upload failed.";
-                status.classList.add("text-danger");
-                console.error(error);
-            }
-        }
-
-        async function fetchFiles() {
-            try {
-                const response = await fetch('http://localhost:3000/files');
-                const files = await response.json();
-
-                const fileList = document.getElementById('fileList');
-                fileList.innerHTML = '';
-
-                files.forEach(file => {
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('list-group-item', 'file-item');
-                    listItem.innerHTML = `
-                        <span>${file.filename}</span>
-                        <div>
-                            <a href="http://localhost:3000/files/${file.filename}" download class="btn btn-sm btn-success">Download</a>
-                            <button class="btn btn-sm btn-danger" onclick="deleteFile(${file.id})">Delete</button>
-                        </div>
-                    `;
-                    fileList.appendChild(listItem);
-                });
-            } catch (error) {
-                console.error("Error fetching files:", error);
-            }
-        }
-
-        async function deleteFile(fileId) {
-            if (!confirm("Are you sure you want to delete this file?")) return;
-
-            try {
-                await fetch(`http://localhost:3000/files/${fileId}`, { method: 'DELETE' });
-                fetchFiles(); // Refresh file list after deletion
-            } catch (error) {
-                console.error("Error deleting file:", error);
-            }
-        }
-
-        // Initial Fetch Calls
-        fetchUsers();
-        fetchFiles();
-
-    </script>
 </body>
 </html>
