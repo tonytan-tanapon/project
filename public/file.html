@@ -27,13 +27,21 @@
     </script>
     <div class="container">
         <h2 class="mb-4 text-center">File management</h2>
-
+<!-- Search Bar -->
+<div class="row mb-3">
+    <div class="col-md-10">
+        <input type="number" id="searchId" class="form-control" placeholder="Search by ID">
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-success w-100" onclick="searchUserById()">Search</button>
+    </div>
+</div>
         <!-- User Table -->
         <div class="table-responsive">
             <table class="table table-bordered table-striped text-center">
                 <thead class="table-dark">
                     <tr>
-                        <th>File ID</th>
+                        <th>User ID</th>
                        
                         <th>File name</th>
                         <th>Upload date</th>

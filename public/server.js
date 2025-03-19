@@ -1,20 +1,28 @@
-const express = require('express');
+// GET: select all
+// GET:id select multiple table
+// GET:id select by id
+// POST: insert
+// PUT: update by id
+// DELTE: delete by id
+// Table
+// comments(id,user_id,comment_text,create_at,sentiment)
+// files(id,filename,fielpath,upload_date,user_id,click,category)
+// users(id,name,email)
+
+const express = require('express'); // create server
 const multer = require('multer'); //file management
 const cors = require('cors'); //Cross-Origin Resource Sharing
-const path = require('path'); //
+const path = require('path'); // manage path
 const mysql = require('mysql2');
-const fs = require('fs');
-// const yahooFinance = require('yahoo-finance2').default;
-const { Pool } = require('pg');
-
-
+const fs = require('fs'); // manage files
+const util = require('util');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static('uploads'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+console.log(__dirname)
 // MySQL Connection
 const db = mysql.createConnection({
     host: 'localhost',
@@ -24,7 +32,7 @@ const db = mysql.createConnection({
     port: 3306
 });
 
-// Connect to MySQL
+/// MySQL conntection
 db.connect(err => {
     if (err) {
         console.error('Database connection failed:', err);
@@ -39,6 +47,7 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
+// File management
 // Configure Multer for file storage
 const storage = multer.diskStorage({
     destination: './uploads/', 
@@ -50,6 +59,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Upload file & save to MySQL
+// upload.single('file') is a function to save file to server
 app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded.' });
@@ -106,6 +116,26 @@ app.get('/files/:filename', (req, res) => {
         if (err) {
             res.status(500).json({ message: 'File not found', error: err.message });
         }
+    });
+});
+
+
+app.get('/user_files/:id', (req, res) => {
+    console.log("Searching for user_id:", req.params.id);
+
+    const userId = req.params.id;
+
+    db.query('SELECT * FROM files WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error fetching comments', error: err.message });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: `No comments found for user_id ${userId}` });
+        }
+
+        console.log("Query complete:", results);
+        res.json(results);
     });
 });
 
@@ -194,6 +224,85 @@ app.get('/users', (req, res) => {
 });
 
 // READ - Get a user by ID
+app.get('/users/:id', (req, res) => {
+    db.query('SELECT * FROM users WHERE id = ?', [req.params.id], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error', error: err.message });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(result[0]);
+    });
+});
+
+const query = util.promisify(db.query).bind(db);
+app.get('/shows/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        const user = await query('SELECT * FROM users WHERE id = ?', [userId]);
+        const comments = await query('SELECT * FROM comments WHERE user_id = ? ORDER BY id', [userId]);
+        const images = await query('SELECT * FROM files WHERE user_id = ? ORDER BY id', [userId]);
+
+        res.json({
+            user: user[0] || null,
+            comments: comments || [],
+            images: images || [],
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Database error', error: error.message });
+    }
+});
+// app.get('/users/:id', (req, res) => {
+//     db.query('SELECT * FROM users WHERE id = ?', [req.params.id], (err, userResults) => {   
+//         if (err) {
+//             return res.status(500).json({ message: 'Database error', error: err.message });
+//         }
+        
+//         db.query('SELECT * FROM comments WHERE user_id = ? order by id', [req.params.id], (err, commentsResults) => {
+//             if (err) {
+//                 return res.status(500).json({ message: 'Database error', error: err.message });
+//             }
+            
+//             db.query('SELECT * FROM files WHERE user_id = ? order by id', [req.params.id], (err, imagesResults) => {
+//                 if (err) {
+//                     return res.status(500).json({ message: 'Database error', error: err.message });
+//                 }
+                
+//                 res.json({user: userResults[0] || null,
+//                     comments: commentsResults || [],
+//                     images: imagesResults || []
+//                 });
+//             });
+    
+//         });
+
+
+//     });
+// });
+
+app.get('/comments/:id', (req, res) => {
+    console.log("Searching for user_id:", req.params.id);
+
+    const userId = req.params.id;
+
+    db.query('SELECT * FROM comments WHERE user_id = ?', [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error fetching comments', error: err.message });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: `No comments found for user_id ${userId}` });
+        }
+
+        console.log("Query complete:", results);
+        res.json(results);
+    });
+});
+
+
 // app.get('/users/:id', (req, res) => {
 //     db.query('SELECT * FROM users WHERE id = ?', [req.params.id], (err, result) => {
 //         if (err) {
@@ -205,36 +314,6 @@ app.get('/users', (req, res) => {
 //         res.json(result[0]);
 //     });
 // });
-
-
-// API to fetch user details, comments, and images
-app.get('/users/:id', (req, res) => {
-    db.query('SELECT * FROM users WHERE id = ?', [req.params.id], (err, userResults) => {   
-        if (err) {
-            return res.status(500).json({ message: 'Database error', error: err.message });
-        }
-        
-        db.query('SELECT * FROM comments WHERE user_id = ? order by id', [req.params.id], (err, commentsResults) => {
-            if (err) {
-                return res.status(500).json({ message: 'Database error', error: err.message });
-            }
-            
-            db.query('SELECT * FROM files WHERE user_id = ? order by id', [req.params.id], (err, imagesResults) => {
-                if (err) {
-                    return res.status(500).json({ message: 'Database error', error: err.message });
-                }
-                
-                res.json({user: userResults[0] || null,
-                    comments: commentsResults || [],
-                    images: imagesResults || []
-                });
-            });
-    
-        });
-
-
-    });
-});
 
 app.get('/comments', (req, res) => {
     

@@ -3,6 +3,37 @@
  var currentPage = 1;
  var limit = 10;
 
+ async function searchById() {
+    const id = document.getElementById("searchId").value.trim();
+
+    if (!id ) {
+        fetchComments(); // Fetch all users if the search field is empty
+        return;
+    }
+
+    console.log("Searching for comments by user_id:", id);
+
+    try {
+        const response = await fetch(`http://localhost:4000/comments/${id}`);
+
+        if (response.ok) {
+            const comments = await response.json();
+            console.log("Comments found:", comments);
+
+            users = comments; // Store results in the array
+            currentPage = 1;
+            displayComments(); // Call the function to display comments
+        } else {
+            alert(`No comments found for user_id ${id}.`);
+        }
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+        alert("Error connecting to the server.");
+    }
+    document.getElementById("searchId").value = "";
+}
+
+
  async function fetchComments() {
     console.log("Fetch")
      try {
@@ -65,12 +96,12 @@ async function deleteComment(commentId) {
 
 
 function getSentimentText(sentiment) {
-    if (sentiment > 0) {
+    if (sentiment > 0.002) {
         return "Positive";
-    } else if (sentiment < 0) {
+    } else if (sentiment < -0.002) {
         return "Negative";
     } else {
-        return "Processing";
+        return "Natural";
     }
 }
 

@@ -1,6 +1,39 @@
 var files = [];
 var currentPage = 1;
 var limit = 10;
+
+async function searchUserById() {
+    const id = document.getElementById("searchId").value.trim();
+
+    if (!id) {
+        fetchFiles(); // Fetch all users if the search field is empty
+        return;
+    }
+
+    console.log("Searching for comments by user_id:", id);
+
+    try {
+        const response = await fetch(`http://localhost:4000/user_files/${id}`);
+
+        if (response.ok) {
+            const comments = await response.json();
+            console.log("Comments found:", comments);
+
+            files = comments; // Store results in the array
+            currentPage = 1;
+            displayfile(); // Call the function to display comments
+        } else {
+            alert(`No comments found for user_id ${id}.`);
+        }
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+        alert("Error connecting to the server.");
+    }
+
+    document.getElementById("searchId").value = "";
+}
+
+
 async function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const status = document.getElementById('status');
@@ -69,7 +102,7 @@ function displayfile(){
         //  console.log(file)
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><span class="user-id-link" onclick="viewUser(${file.id})">${file.id}</span></td>
+            <td><span class="user-id-link" onclick="viewUser(${file.user_id})">${file.user_id}</span></td>
             
             <td><span >${file.filename}</span></td>
             <td><span >${file.upload_date}</span></td>

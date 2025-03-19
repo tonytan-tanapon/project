@@ -3,6 +3,36 @@
  var currentPage = 1;
  var limit = 10;
 
+
+ async function searchUserById() {
+    const id = document.getElementById("searchId").value.trim();
+
+    if (!id) {
+        fetchUsers();
+        return;
+    }
+
+    console.log("Searching for user with ID:", id);
+
+    try {
+        const response = await fetch(`http://localhost:4000/users/${id}`);
+        
+        if (response.ok) {
+            const user = await response.json();
+            users = Array.isArray(user) ? user : [user]; // Ensure it's an array
+            currentPage = 1;
+            displayUsers();
+        } else {
+            alert(`User with ID ${id} not found.`);
+        }
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        alert("Error connecting to the server.");
+    }
+
+    document.getElementById("searchId").value = "";
+}
+
  async function fetchUsers() {
     console.log("Fetch")
      try {
@@ -45,15 +75,20 @@ try {
  function displayUsers() {
      const tableBody = document.getElementById('userTable');
      tableBody.innerHTML = '';
-
+     
+     
+    //  if(users.length < 0){
+    //     console.log(users.length)
+    //  }
      const start = (currentPage - 1) * limit;
      const end = start + limit;
      const paginatedUsers = users.slice(start, end);
-
+        
      paginatedUsers.forEach(user => {
          const row = document.createElement('tr');
          row.innerHTML = `
              <td><span class="user-id-link" onclick="viewUser(${user.id})">${user.id}</span></td>
+             <td><span class="user-id-link" onclick="viewLiveUser(${user.id})">${user.id}</span></td>
              <td><input type="text" value="${user.name}" id="name-${user.id}" disabled></td>
              <td><input type="email" value="${user.email}" id="email-${user.id}" disabled></td>
              <td>
@@ -71,6 +106,9 @@ try {
  function viewUser(id) {
      window.location.href = `user-detail.html?id=${id}`;
  }
+ function viewLiveUser(id) {
+    window.location.href = `public.html?id=${id}`;
+}
  function enableEdit(id) {
      document.getElementById(`name-${id}`).disabled = false;
      document.getElementById(`email-${id}`).disabled = false;
@@ -118,6 +156,8 @@ try {
      }
  }
 
+ 
+ 
  async function deleteUser(id) {
     console.log("delete:"+id)
      await fetch(`http://localhost:4000/users/${id}`, { method: 'DELETE' });

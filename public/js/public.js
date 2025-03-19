@@ -1,3 +1,7 @@
+const params = new URLSearchParams(window.location.search);
+console.log(window.location)
+const userId = params.get('id'); // GET varliable from URL
+
 let model;
 
 // Load the Universal Sentence Encoder model
@@ -6,10 +10,8 @@ async function loadModel() {
     console.log("Model loaded.");
 }
 loadModel();
-function getUserDetails() {
-    const params = new URLSearchParams(window.location.search);
-    const userId = params.get('id');
 
+function getUserDetails() {
     if (!userId) {
         alert("User ID is missing!");
         return;
@@ -21,7 +23,7 @@ function getUserDetails() {
             // console.log(data);
 
             // Display user details
-            document.getElementById('userId').textContent = data.user?.id || "N/A";
+            // document.getElementById('userId').textContent = data.user?.id || "N/A";
             document.getElementById('userName').textContent = data.user?.name || "N/A";
             document.getElementById('userEmail').textContent = data.user?.email || "N/A";
 
@@ -31,9 +33,9 @@ function getUserDetails() {
 
             if (data.comments.length > 0) {
                 data.comments.forEach(comment => {
-                    const p = document.createElement("p");
-                    p.textContent = comment.comment_text;
-                    commentsContainer.appendChild(p);
+                    const p = document.createElement("p"); // create <p>
+                    p.textContent = comment.comment_text;  // <p> comment.commnet_text </p>
+                    commentsContainer.appendChild(p);   // append to commentsContainer
                 });
             } else {
                 commentsContainer.innerHTML += "<p>No comments available.</p>";
@@ -47,13 +49,14 @@ function getUserDetails() {
                 data.images.forEach(image => {
                     
                     // console.log(image.filepath)
-                    const img = document.createElement("img");
+                    const img = document.createElement("img"); /// create <img></>
                     img.src = `http://localhost:4000/${image.filepath}`; // Ensure this path matches your backend setup
                     img.alt = "User Image";
                     img.style.width = "150px";
                     img.style.margin = "10px";
-
+                    
                     img.onclick = () => updateClickCount(image.id);
+                    // create <img src="URL" alt = "text description" width ="150px" margin = "10px" onclick =updateClickCount(image.id) ></img>
 
                     imagesContainer.appendChild(img);
                 });
@@ -83,7 +86,7 @@ function updateClickCount(imageId) {
 }
 // Function to add a comment
 function addComment() {
-    const userId = document.getElementById('userId').textContent;
+    // const userId = document.getElementById('userId').textContent;
     const commentText = document.getElementById('commentInput').value.trim();
     var id = null
 
